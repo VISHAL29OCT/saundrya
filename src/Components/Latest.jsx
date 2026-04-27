@@ -39,7 +39,7 @@ const Latest = () => {
     };
     return (
         <>
-            <div className='flex gap-12 items-center justify-center text-xl'>
+            <div className="flex overflow-x-auto whitespace-nowrap gap-8 px-4 no-scrollbar text-xl items-center justify-center">
 
                 <div className='cursor-pointer'>
                     <h2 onClick={() => setCategory("summer")}
@@ -70,18 +70,18 @@ const Latest = () => {
 
             </div>
 
-            <div className='flex gap-6 justify-center items-center h-96'>
+            <div className='flex flex-wrap  gap-4 sm :gap-6 justify-center items-center'>
 
                 {products[category].map((item, index) => (
-                    <div key={index} className='flex flex-col items-center w-52 h-80  mt-10 hover: transition duration-300'>
+                    <div key={index} className='flex flex-col items-center w-[45%]  sm:w-40 md:w-44 lg:w-52 mt-10 hover: transition duration-300'>
 
-                        <div className='relative group w-52 h-52 overflow-hidden'>
+                        <div className='relative group w-full h-52 overflow-hidden'>
                             <img src={item.img} className="w-full h-full object-cover" />
                             <img src={item.hover} className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition duration-500 w-full h-full object-cover" />
                         </div>
 
                         <p className='mt-2 text-xs font-medium text-center'>{item.category}</p>
-                        <p className='text-sm text-gray-600 mt-1 text-center wrap-break-wordbreak-words'>{item.name}</p>
+                        <p className='text-sm text-gray-600 mt-1 text-center wrap-break-words min-h-10'>{item.name}</p>
                         <p className='text-sm text-gray-500'>{item.price}</p>
 
                     </div>
@@ -92,7 +92,7 @@ const Latest = () => {
 
             <div className=' flex flex-col items-center justify-center'>
 
-                <button className="relative bg-black border border-black text-white px-8 py-2 overflow-hidden group ">
+                <button className="relative mt-5 bg-black border border-black text-white px-8 py-2 overflow-hidden group ">
                     {/* white overlay */}
                     <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
 
