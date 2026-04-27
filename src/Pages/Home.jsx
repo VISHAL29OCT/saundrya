@@ -7,10 +7,10 @@ import Ocassion from "../Components/Ocassion";
 import Notice from "../Components/Notice";
 import HeroSection2 from "../Components/HeroSection2";
 import ShopLook from "../Components/ShopLook";
-import Services from "../Components/services";
 import Instagram from "../Components/Instagram";
 import Links from "../Components/Links";
 import Investiget from "../Components/Investiget";
+import Allthings from "../Components/Allthings";
 
 export default function Home() {
   return (
@@ -24,7 +24,7 @@ export default function Home() {
       <Notice/>
       <HeroSection2/>
       <ShopLook/>
-      <Services/>
+      <Allthings/>
       <Instagram/>
       <Links/>
       <Investiget/>
