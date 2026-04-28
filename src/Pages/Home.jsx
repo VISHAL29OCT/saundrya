@@ -26,7 +26,7 @@ export default function Home() {
       <Allthings/>
       <Instagram/>
       <Links/>
-      {/* <Investiget/> */}
+    
       
     </>
   );
