@@ -4,7 +4,7 @@ const Allthings = () => {
   return (
     <div className="mt-5">
 
-      <div className="flex overflow-x-auto gap-4 px-4 no-scrollbar  md:items-center lg:justify-center mt-4 ">
+      <div className="flex overflow-x-auto gap-4 mx-2 no-scrollbar  md:items-center lg:justify-center mt-4 ">
 
         <img src="service1.avif" className="w-20 h-20 sm:w-24 sm:h-24 shrink-0" />
         <img src="service2.avif" className="w-20 h-20 sm:w-24 sm:h-24 shrink-0" />

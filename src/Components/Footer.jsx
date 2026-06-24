@@ -3,11 +3,11 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className='flex flex-col sm:flex-row justify-between items-center bg-gray-200 text-black mt-6 px-4 sm:px-6 py-4 gap-3'>
+    <div className='flex flex-col sm:flex-row justify-between items-center bg-gray-200 text-black px-4 sm:px-6 py-4 gap-3'>
 
       {/* LEFT TEXT */}
       <div className='text-xs sm:text-sm text-center sm:text-left'>
-        © 2026 - Amama Powered by VISHAL
+        © 2026 - Saundrya Powered by VISHAL
       </div>
 
       {/* SOCIAL ICONS */}

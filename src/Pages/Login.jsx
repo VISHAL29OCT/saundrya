@@ -1,72 +1,108 @@
 import React from 'react'
-import { Link, useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { useState } from 'react'
 
-const Login = () => {
-  const navigate = useNavigate()
+const Login = ({ open, setOpen, openSignup ,setIsLoggedIn }) => {
 
-  const HandleLogin = (e) => {
-    e.preventDefault()
-    navigate("/")
-  }
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-  return (
-    <div className='flex justify-center items-center h-screen bg-gray-100 px-4'>
+  const handleLogin = () => {
+    const savedUser =
+    JSON.parse(localStorage.getItem("user"))
 
-      <form 
-        onSubmit={HandleLogin}
-        className='bg-white p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-sm'
-      >
-
-        <h2 className='text-xl sm:text-2xl font-semibold text-center mb-2'>
-          Login Here
-        </h2>
-
-        <p className='text-sm text-gray-500 text-center mb-6'>
-          Enter your email and password
-        </p>
-
-        <div className='flex flex-col gap-4'>
-
-          <input  
-            type="email"  
-            placeholder='E-mail' 
-            required
-            className='border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
-          />
-
-          <input 
-            type="password" 
-            placeholder='Password' 
-            required
-            className='border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
-          />
-
-          <div className='text-right'>
-            <Link to="/forgot-password" className='text-sm text-blue-500 hover:underline'>
-              Forgot password?
-            </Link>
-          </div>
-
-          <button 
-            type='submit' 
-            className='bg-black text-white py-2 rounded-md hover:bg-gray-800 transition'
-          >
-            Login
-          </button>
-
-        </div>
-
-        <p className='text-center mt-4 text-sm'>
-          Don't have an account?{" "}
-          <Link to="/signup" className='text-blue-500 hover:underline'>
-            Sign up
-          </Link>
-        </p>
-
-      </form>
-
-    </div>
+  if (
+    savedUser?.email === email &&
+    savedUser?.password === password
+  ){
+  localStorage.setItem(
+    "isLoggedIn",
+    JSON.stringify(true)
   )
+  setIsLoggedIn(true)
+  setOpen(false)
+}
+  else {
+    alert("Invalid Email or Password")
+  }
 }
 
+  if (!open) return null
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 bg-black/40 z-40"
+        onClick={() => setOpen(false)}
+      >
+
+
+        <div
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-400 z-50 w-[90%] max-w-md p-6 rounded-xl shadow-xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+
+          <div className="flex justify-between items-center my-8">
+            <h2 className="text-3xl font-semibold text-orange-800">
+              Login Here
+            </h2>
+
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+            >
+              ✕
+            </button>
+
+
+          </div>
+
+          <p className='text-md text-white text-center mb-8'>
+            Enter your account credentials
+          </p>
+
+          <form className='flex flex-col gap-8  min-h-62 '>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border p-3 rounded  placeholder:text-gray-300"
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border p-3 mb-4 rounded  placeholder:text-gray-300"
+            />
+
+
+            <button
+            type='button'
+              onClick={handleLogin}
+              className="w-full bg-red-400 text-white p-3 rounded"
+            >
+
+              LOGIN
+            </button>
+          </form>
+
+          <p className='text-center my-4 text-sm'>
+            Don't have an account?{" "}
+            <span
+              onClick={openSignup}
+              className='text-blue-500 hover:underline cursor-pointer'
+            >
+              Sign up
+            </span>
+          </p>
+
+        </div >
+      </div >
+    </>
+
+  )
+}
 export default Login

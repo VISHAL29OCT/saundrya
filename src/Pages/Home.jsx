@@ -25,9 +25,8 @@ export default function Home() {
       <ShopLook/>
       <Allthings/>
       <Instagram/>
-      <Links/>
-    
-      
+      <Links/>    
     </>
   );
 }
+

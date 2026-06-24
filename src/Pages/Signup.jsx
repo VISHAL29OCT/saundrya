@@ -1,70 +1,126 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
 
-const Signup = () => {
-  const navigate = useNavigate()
+const Signup = ({ open, setOpen, openLogin }) => {
 
-  const HandleSignup = (e) => {
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSignup = (e) => {
     e.preventDefault()
-    navigate("/login")
+
+    const user = {
+      firstName,
+      lastName,
+      email,
+      password
+    }
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(user)
+    )
+
+    alert("Account Created Successfully!")
+
+    setOpen(false)
+
+    openLogin()
   }
 
+  if (!open) return null
+
   return (
-    <div className='flex justify-center items-center h-screen bg-gray-100 px-4'>
-
-      <form 
-        onSubmit={HandleSignup}
-        className='bg-white p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-sm overflow-y-auto'
+    <>
+      <div
+        className="fixed inset-0 bg-black/40 z-40 "
+        onClick={() => setOpen(false)}
       >
+        <div
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-400 z-50 w-[90%] max-w-md p-6  rounded-xl shadow-xl"
+          onClick={(e) => e.stopPropagation()}
+        >
 
-        <h2 className='text-xl sm:text-2xl font-semibold text-center mb-2'>
-          Sign Up Here
-        </h2>
+          <div className="flex justify-between items-center py-3">
+             <h2 className="text-3xl font-semibold text-orange-800">
+              Signup Here
+            </h2>
 
-        <p className='text-sm text-gray-500 text-center mb-6'>
-          Please fill in the information below:
-        </p>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+            >
+              ✕
+            </button>
+          </div>
 
-        <div className='flex flex-col gap-4'>
+          <p className='text-md text-white text-center mb-6'>
+            Please fill in the information below
+          </p>
 
-          <input type="text" placeholder='First Name'
-            className='border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
-          />
-
-          <input type="text" placeholder='Last Name'
-            className='border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
-          />
-
-          <input type="email" placeholder='E-mail'
-            className='border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
-          />
-
-          <input
-            type="password"
-            placeholder='Password'
-            className='border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
-          />
-
-          <button 
-            type="submit"
-            className='bg-black text-white py-2 rounded-md hover:bg-gray-800 transition'
+          <form
+            onSubmit={handleSignup}
+            className=' min-h-62 flex flex-col gap-4'
           >
-            CREATE ACCOUNT
-          </button>
+
+            <input
+              type="text"
+              placeholder='First Name'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className='border px-4 py-2 rounded-md  placeholder:text-gray-300'
+            />
+
+            <input
+              type="text"
+              placeholder='Last Name'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className='border px-4 py-2 rounded-md  placeholder:text-gray-300'
+            />
+
+            <input
+              type="email"
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='border px-4 py-2 rounded-md  placeholder:text-gray-300'
+            />
+
+            <input
+              type="password"
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className='border px-4 py-2 rounded-md  placeholder:text-gray-300'
+            />
+
+            <button
+              type="submit"
+              className="w-full bg-red-400 text-white p-3 rounded"
+            >
+              CREATE ACCOUNT
+            </button>
+
+          </form>
+
+          <p className='text-center py-3 text-sm'>
+            Already have an account?{" "}
+            <span
+              onClick={() => {
+                setOpen(false)
+                openLogin()
+              }}
+              className='text-blue-500 hover:underline cursor-pointer'
+            >
+              Sign In
+            </span>
+          </p>
 
         </div>
-
-        <p className='text-center mt-4 text-sm'>
-          Already have an account?{" "}
-          <Link to="/login" className='text-blue-500 hover:underline'>
-            Sign In
-          </Link>
-        </p>
-
-      </form>
-
-    </div>
+      </div>
+    </>
   )
 }
 

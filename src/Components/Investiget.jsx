@@ -7,7 +7,7 @@
 // <div>
 //     <h2 className='font-bold'>CONTACT US:</h2>
 //     <p className='font-semibold mt-5'>Order status, delivery issues related queries</p>
-//     <p> email us at: <span className='font-light hover:underline'> customercare@amama.in</span> </p>
+//     <p> email us at: <span className='font-light hover:underline'> customercare@saundrya.in</span> </p>
 //     < p className='font-serif'>Mon - Fri (10 AM - 6 PM)</p>
 // </div>
 // <div>
