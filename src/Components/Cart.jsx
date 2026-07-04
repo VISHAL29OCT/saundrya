@@ -60,16 +60,23 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
                         ) : (
                             cart.map((item) => (
                                 <div key={item._id} className='p-4'>
-                                    <div className='lg:flex flex-col sm:flex-row gap-4 items-center sm:items-start'>
-                                        <img src={item.img} alt="" className='w-28 h-28 object-cover rounded' />
+                                    <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                                        <img src={item.img} alt="" className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-lg border" />
                                         <div className='flex flex-col gap-2'>
-                                            <h2 className='leading-6 lg:text-sm'>{item.name}</h2>
+                                            <h2 className="text-sm font-medium leading-5 line-clamp-2">
+                                                {item.name}
+                                            </h2>
                                             <p className='font-semibold'>₹{item.price}</p>
                                             <div className='flex items-center gap-2'>
-                                                <button className='border p-1 h-8 w-8' onClick={() => decreaseQty(item._id)}>-</button>
+                                                <button className="w-8 h-8 border rounded hover:bg-gray-100" onClick={() => decreaseQty(item._id)}>
+                                                    -
+                                                </button>
                                                 <span> {item.qty}</span>
-                                                <button className='border h-8 w-8 p-1 mx-1 ' onClick={() => increaseQty(item._id)}>+</button>
-                                                <button className='text-xl' onClick={() => removeFromCart(item._id)} ><MdDelete />
+                                                <button className="w-8 h-8 border rounded hover:bg-gray-100" onClick={() => increaseQty(item._id)}>
+                                                    +
+                                                </button>
+                                                <button className="text-red-500 hover:text-red-700 text-xl" onClick={() => removeFromCart(item._id)} >
+                                                    <MdDelete />
                                                 </button>
                                             </div>
 
