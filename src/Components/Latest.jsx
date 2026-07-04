@@ -1,13 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import products from '../data/productsarray';
 
 const Latest = () => {
     const [category, setCategory] = useState("summer")
-
+    const [products, setProducts] = useState([]);
     const filteredProducts = products.filter(
         (item) => item.latestCategory === category
     )
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/products`
+        )
+            .then((res) =>
+                res.json()
+            )
+            .then((data) => {
+                setProducts(data);
+            });
+    }, []);
     return (
         <>
             <div className='bg-rose-50 pb-6 pt-6 lg:mx-6 mx-2 border-b-2 '>
@@ -55,10 +65,10 @@ const Latest = () => {
 
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 gap-2 px-2 md:px-4 py-6 bg-rose-50'>
 
-                    {filteredProducts.slice(0,4).map((item,index) => (
-                        <div key={index} className='flex flex-col items-center transition duration-300'>
+                    {filteredProducts.slice(0, 4).map((item, index) => (
+                        <div key={item._id} className='flex flex-col items-center transition duration-300'>
 
-                            <Link to={`/product/${item.id}`}>
+                            <Link to={`/product/${item._id}`}>
 
                                 <div className='relative group w-full h-full overflow-hidden'>
 
@@ -78,7 +88,7 @@ const Latest = () => {
 
                             <p className='mt-2 text-s font-medium text-center'>{item.type}</p>
                             <p className='text-md text-gray-600 mt-1 text-center wrap-break-word'>{item.name}</p>
-                            <p className='text-md text-gray-500'>{item.price}</p>
+                            <p className='text-md text-gray-500'>₹{item.price.toLocaleString("en-IN")}</p>
                         </div>
                     ))}
 

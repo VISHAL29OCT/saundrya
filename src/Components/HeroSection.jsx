@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { Link } from "react-router";
-import product from "../Pages/Product";
 
 
 export default function HeroSection() {

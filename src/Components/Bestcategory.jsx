@@ -1,16 +1,26 @@
-import React from 'react'
-import products from '../data/productsarray'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
 
+
 const Bestcategory = () => {
+    const [bestProducts, setBestProducts] = useState([]);
 
-    const bestproducts = products.filter(
-        (item) =>
-            item.id >= 112 &&
-            item.id <= 115
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/products`
+        )
+            .then((res) =>
+                res.json()
+            )
+            .then((data) => {
+                const filtered = data.filter((item) =>
+                    item.bestseller
+                ).slice(0,4);
 
-    )
+                setBestProducts(filtered);
+            });
+    }, []);
     return (
         <>
             <div className=' flex flex-col  pb-6  lg:mx-6 mx-2 bg-rose-50 border-b-2 '>
@@ -19,11 +29,11 @@ const Bestcategory = () => {
                 <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:p-6 p-4 gap-4'>
 
                     {
-                        bestproducts.map((item) => (
+                        bestProducts.map((item) => (
 
                             <div key={item.id} className='flex flex-col'>
 
-                                <Link to={`/product/${item.id}`}>
+                                <Link to={`/product/${item._id}`}>
 
                                     <div className='relative group overflow-hidden'>
 
@@ -49,7 +59,7 @@ const Bestcategory = () => {
                                 </p>
 
                                 <p className='text-sm text-rose-400 text-center'>
-                                    {item.price}
+                                    ₹{item.price.toLocaleString("en-IN")}
                                 </p>
                             </div>
                         ))

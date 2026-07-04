@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from "react-router-dom"
-import products from '../data/productsarray'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -10,12 +9,35 @@ const ProductsDetails = ({ addToCart, cart }) => {
     const { id } = useParams()
     const [index, setIndex] = useState(0)
     const [qty, setQty] = useState(1)
+    const [singleProduct, setSingleProduct] = useState(null);
+    const [products, setProducts] = useState([]);
 
-    const singleProduct = products.find((item) => item.id == id)
+
     const alreadyInCart = cart.some(
-        item => item.id === singleProduct.id
+        item => item._id === singleProduct?._id
     );
-    const [mainImage, setMainImage] = useState(singleProduct?.img)
+    const [mainImage, setMainImage] = useState(null)
+
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/products/${id}`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                setSingleProduct(data);
+            });
+    }, [id]);
+
+
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/products`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                setProducts(data);
+            });
+    }, []);
 
     useEffect(() => {
 
@@ -23,9 +45,10 @@ const ProductsDetails = ({ addToCart, cart }) => {
             setMainImage(singleProduct.img)
         }
 
-    }, [id])
+    }, [singleProduct])
+
     if (!singleProduct) {
-        return <h1>Product Not Found</h1>
+        return <h1>Loading .....</h1>
     }
 
     const next = () => {
@@ -40,11 +63,32 @@ const ProductsDetails = ({ addToCart, cart }) => {
         }
     }
 
-    const addToWishlist = (product) => {
+    const addToWishlist = async (product) => {
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/wishlist/${product._id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                }
+            );
+
+            const data =
+                await res.json();
+
+            alert(data.message);
+        } catch (error) {
+            console.log(error);
+        }
+        
         const oldwishlist = JSON.parse(localStorage.getItem("wishlist")) || []
 
         const alreadyExist = oldwishlist.find(
-            item => item.id === product.id
+            item => item._id === product._id
         )
 
         if (!alreadyExist) {
@@ -81,14 +125,17 @@ const ProductsDetails = ({ addToCart, cart }) => {
                 </div>
 
                 <div className='my-2 lg:mx-4 mx-2  aspect-square self-start'>
-                    <img src={mainImage} className='object-cover w-full h-full lg:w-full ' />
+                    {
+                        mainImage && (
+                            <img src={mainImage} className='object-cover w-full h-full lg:w-full ' />
+                        )}
                 </div>
 
                 <div className='flex flex-col lg:gap-6 gap-2 p-2'>
                     <h2 className='lg:text-3xl text-2xl font-semibold leading-snug'>
                         {singleProduct.name}
                     </h2>
-                    <span className="text-2xl font-medium">{singleProduct.price}</span>
+                    <span className="text-2xl lg:text-xl font-medium">Price - Rs {singleProduct.price}/-</span>
 
                     <div className='flex items-center gap-2'>
 
@@ -96,7 +143,7 @@ const ProductsDetails = ({ addToCart, cart }) => {
                         <button onClick={() => {
                             if (qty > 1) { setQty(qty - 1) }
                         }} className='border px-2 py-1'>-</button>
-                         <span>{qty}</span>
+                        <span>{qty}</span>
 
                         <button onClick={() => setQty(qty + 1)} className='border px-2 py-1'>+</button>
                     </div>
@@ -110,10 +157,10 @@ const ProductsDetails = ({ addToCart, cart }) => {
                                     Go To Bag
                                 </button>
                             ) : (
-    <button onClick={() =>  addToCart({...singleProduct ,qty})} className='flex-1 py-3 bg-red-400 text-white font-semibold rounded-md'>
+                                <button onClick={() => addToCart({ ...singleProduct, qty })} className='flex-1 py-3 bg-red-400 text-white font-semibold rounded-md'>
                                     Add To Bag
                                 </button>
-                )
+                            )
                         }
 
                     </div>
@@ -177,7 +224,7 @@ const ProductsDetails = ({ addToCart, cart }) => {
                             )
                             .map((item) => (
                                 <Link
-                                    to={`/product/${item.id}`}
+                                    to={`/product/${item._id}`}
                                     key={item.id}
                                 >
                                     <div>

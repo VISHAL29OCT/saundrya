@@ -17,7 +17,7 @@ const Profile = () => {
   }
 
   const handleSave = async () => {
-    await fetch(`${API_URL}/myprofile`, {
+    await fetch(`${API_URL}/auth/me`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -36,17 +36,17 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/myprofile`, {
+    fetch(`${API_URL}/auth/me`, {
       headers: {
-        Authorization: ` Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`
       }
     })
       .then(res => res.json())
-      .then(data => {
-        const names = data.name ? data.name.split(" ") : ["", ""]
+      .then((data) => {
+        console.log(data);
         setProfile({
-          firstName: names[0] || "",
-          lastName: names[1] || "",
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
           email: data.email || "",
           phone: data.phone || "",
           gender: data.gender || "",
@@ -72,6 +72,7 @@ const Profile = () => {
           <input
             name='firstName'
             value={profile.firstName}
+            disabled
             type="text"
             className='border lg:p-2 p-1 rounded'
             onChange={handleChange}
@@ -83,6 +84,7 @@ const Profile = () => {
           <input
             name='lastName'
             value={profile.lastName}
+            disabled
             type="text"
             className='border p-2 rounded'
             onChange={handleChange}
@@ -95,6 +97,7 @@ const Profile = () => {
             name='email'
             value={profile.email}
             type="email"
+            disabled
             className='border p-2 rounded'
             onChange={handleChange}
           />
@@ -106,6 +109,7 @@ const Profile = () => {
             name='phone'
             value={profile.phone}
             type="tel"
+            disabled={!isEditing}
             className='border p-2 rounded'
             onChange={handleChange}
           />
@@ -118,6 +122,7 @@ const Profile = () => {
             <select
               name='gender'
               value={profile.gender}
+              disabled={!isEditing}
               className='border p-2 rounded'
               onChange={handleChange}
             >
@@ -133,6 +138,7 @@ const Profile = () => {
               name='birthday'
               value={profile.birthday}
               type='date'
+              disabled={!isEditing}
               className='border p-2 rounded'
               onChange={handleChange}
             />

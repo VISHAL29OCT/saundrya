@@ -3,13 +3,9 @@ import { Link } from 'react-router'
 
 const Checkout = ({ cart, removeFromCart }) => {
 
-    const totalPrice = cart.reduce((total, item) => {
-        return total +
-            Number(
-                item.price.replace("₹", "")
-                    .replace(".00", "")
-            ) * item.qty
-    }, 0)
+   const totalPrice = cart.reduce((total, item) => {
+  return total + item.price * item.qty;
+}, 0);
 
     const shippingCharge =
         totalPrice < 1999 ? 60 : 0
@@ -66,14 +62,14 @@ const Checkout = ({ cart, removeFromCart }) => {
 
                                         <div className='flex flex-col sm:flex-row sm:justify-between gap-2'>
                                             <h2 className='leading-6 lg:text-sm'>{item.name}</h2>
-                                            <p className='font-semibold'>{item.price}</p>
+                                            <p className='font-semibold'>Rs {item.price}/-</p>
                                         </div>
 
                                         <p>product code:78333</p>
                                         <span> QTY:{item.qty}</span>
 
                                         <div className='flex flex-col sm:flex-row  gap-2 lg:gap-4 text-sm'>
-                                            <button onClick={() => removeFromCart(item.id)} className='border py-1 rounded-sm bg-gray-100'>REMOVE</button>
+                                            <button onClick={() => removeFromCart(item._id)} className='border py-1 rounded-sm bg-gray-100'>REMOVE</button>
 
                                             <button onClick={() => addToWishlist(item)} className='border  rounded-sm bg-gray-100 py-1 '>MOVE TO WISHLIST</button>
                                         </div>

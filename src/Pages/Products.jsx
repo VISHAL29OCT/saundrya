@@ -1,18 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom"
-import products from '../data/productsarray'
 
 const Products = ({ addToCart }) => {
     const { category, query } = useParams()
     const [filterOpen, setFilterOpen] = useState(false)
     const [price, setPrice] = useState(5000)
     const [sortOption, setSortOption] = useState("")
-
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/products`
+        )
+            .then((res) =>
+                res.json()
+            )
+            .then((data) => {
+                setProducts(data);
+            });
+    }, []);
     const filteredProducts =
         products.filter((item) => {
 
             const priceValue =
-                Number(item.price.replace("₹", "").replace(".00", ""))
+                Number(item.price);
 
             if (category) {
 
@@ -41,9 +51,7 @@ const Products = ({ addToCart }) => {
         sortedProducts.sort((a, b) => {
 
             return (
-                Number(a.price.replace("₹", "").replace(".00", "")) -
-
-                Number(b.price.replace("₹", "").replace(".00", ""))
+                a.price - b.price
             )
 
         })
@@ -55,9 +63,7 @@ const Products = ({ addToCart }) => {
         sortedProducts.sort((a, b) => {
 
             return (
-                Number(b.price.replace("₹", "").replace(".00", "")) -
-
-                Number(a.price.replace("₹", "").replace(".00", ""))
+                b.price - a.price
             )
 
         })
@@ -209,8 +215,8 @@ const Products = ({ addToCart }) => {
                     {
                         sortedProducts.map((item) => (
 
-                            <div key={item.id} className='relative group cursor-pointer'>
-                                <Link to={`/product/${item.id}`}>
+                            <div key={item._id} className='relative group cursor-pointer'>
+                                <Link to={`/product/${item._id}`}>
                                     <img
                                         src={item.img}
                                         alt=""

@@ -7,7 +7,6 @@ import Product from "./Pages/Product";
 import Products from "./Pages/Products";
 import ProductsDetails from "./Pages/ProductsDetails";
 import { useState, useEffect } from "react";
-import products from "./data/productsarray";
 import Checkout from "./Pages/Checkout";
 import Payment from "./Pages/Payment";
 import Paymentpage from "./Pages/Paymentpage";
@@ -20,77 +19,220 @@ import Wishlist from "./Pages/Wishlist";
 import Spotting from "./Pages/Spotting";
 import ScrollToTop from "./Components/ScrollToTop";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import SavedAddresses from "./Pages/SavedAddress";
+
 
 
 
 function App() {
-  const [cart, setCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  )
+  const [cart, setCart] = useState([])
 
   useEffect(() => {
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(cart)
-    )
-  }, [cart])
+    const fetchCart = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/cart`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(
+                "token"
+              )}`,
+            },
+          }
+        );
 
+        const data = await res.json();
 
-  const addToCart = (product) => {
+        const formattedCart = data.map(
+          (item) => ({
+            ...item.product,
+            qty: item.qty,
+          })
+        );
 
-    const existingProduct = cart.find(
-      (item) => item.id === product.id
-    )
+        setCart(formattedCart);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-    if (existingProduct) {
+    if (localStorage.getItem("token")) {
+      fetchCart();
+    }
+  }, []);
+
+  const addToCart = async (
+    product
+  ) => {
+    try {
+      await fetch(
+        `${import.meta.env.VITE_API_URL}/cart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+            Authorization: `Bearer ${localStorage.getItem(
+              "token"
+            )}`,
+          },
+          body: JSON.stringify({
+            productId: product._id,
+            qty: product.qty || 1,
+          }),
+        }
+      );
+
+      // UI update ke liye
+      setCart((prev) => {
+        const existing =
+          prev.find(
+            (item) =>
+              item._id ===
+              product._id
+          );
+
+        if (existing) {
+          return prev.map(
+            (item) =>
+              item._id ===
+                product._id
+                ? {
+                  ...item,
+                  qty:
+                    item.qty +
+                    (product.qty ||
+                      1),
+                }
+                : item
+          );
+        }
+
+        return [
+          ...prev,
+          {
+            ...product,
+            qty:
+              product.qty || 1,
+          },
+        ];
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const increaseQty = async (
+    productId
+  ) => {
+    const item = cart.find(
+      (item) =>
+        item._id === productId
+    );
+
+    const newQty =
+      item.qty + 1;
+
+    await fetch(
+      `${import.meta.env.VITE_API_URL}/cart/${productId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type":
+            "application/json",
+          Authorization: `Bearer ${localStorage.getItem(
+            "token"
+          )}`,
+        },
+        body: JSON.stringify({
+          qty: newQty,
+        }),
+      }
+    );
+
+    setCart(
+      cart.map((item) =>
+        item._id === productId
+          ? {
+            ...item,
+            qty: newQty,
+          }
+          : item
+      )
+    );
+  };
+
+  const decreaseQty = async (
+    productId
+  ) => {
+    const item = cart.find(
+      (item) =>
+        item._id === productId
+    );
+
+    if (item.qty === 1)
+      return;
+
+    const newQty =
+      item.qty - 1;
+
+    await fetch(
+      `${import.meta.env.VITE_API_URL}/cart/${productId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type":
+            "application/json",
+          Authorization: `Bearer ${localStorage.getItem(
+            "token"
+          )}`,
+        },
+        body: JSON.stringify({
+          qty: newQty,
+        }),
+      }
+    );
+
+    setCart(
+      cart.map((item) =>
+        item._id === productId
+          ? {
+            ...item,
+            qty: newQty,
+          }
+          : item
+      )
+    );
+  };
+
+  const removeFromCart = async (
+    productId
+  ) => {
+    try {
+      await fetch(
+        `${import.meta.env.VITE_API_URL}/cart/${productId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "token"
+            )}`,
+          },
+        }
+      );
 
       setCart(
-        cart.map((item) =>
-
-          item.id === product.id
-            ? {
-              ...item,
-              qty: item.qty + 1
-            }
-            : item
+        cart.filter(
+          (item) =>
+            item._id !== productId
         )
-      )
-
-    } else {
-
-      setCart([
-        ...cart,
-        {
-          ...product,
-          qty: product.qty || 1
-        }
-      ])
-
+      );
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-  }
-
-  const increaseQty = (id) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item))
-  }
-
-  const decreaseQty = (id) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id ? { ...item, qty: item.qty > 1 ? item.qty - 1 : 1 } : item))
-  }
-
-  const removeFromCart = (id) => {
-    setCart(
-      cart.filter((item) => item.id !== id)
-    )
-  }
-
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    JSON.parse(localStorage.getItem("isLoggedIn")) || false
-  )
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"))
 
   return (
     <BrowserRouter>
@@ -139,7 +281,11 @@ function App() {
           } />
 
           <Route path="/celebrity-spotting" element={<Spotting />} />
-
+          <Route path="/savedaddress" element={
+            <ProtectedRoute>
+              <SavedAddresses />
+            </ProtectedRoute>
+          } />
         </Routes>
       </Layout>
     </BrowserRouter>

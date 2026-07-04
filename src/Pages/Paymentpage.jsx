@@ -1,35 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 const Paymentpage = ({ cart, setCart }) => {
     const navigate = useNavigate()
 
     const totalPrice = cart.reduce((total, item) => {
-        return total +
-            Number(
-                item.price.replace("₹", "")
-                    .replace(".00", "")
-            ) * item.qty
-    }, 0)
+        return total + item.price * item.qty;
+    }, 0);
 
-    const savedAddress = JSON.parse(
-        localStorage.getItem("address")
-    ) || {}
+    const [savedAddress, setSavedAddress] =
+        useState({});
+
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/address`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token"
+                    )}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.length > 0) {
+                    setSavedAddress(
+                        data[data.length - 1]
+                    );
+                }
+            });
+    }, []);
+
     const [paymentMethod, setPaymentMethod] = useState("online")
 
-    const handlePayment = () => {
+    const handlePayment = async () => {
 
         if (paymentMethod === "cod") {
-            saveOrder()
+            await saveOrder()
             setCart([])
             navigate("/success")
         }
-
         else {
-            openRazorpay()
-            saveOrder()
-            setCart([])
-            navigate("/success")
+            await openRazorpay()
         }
     }
 
@@ -39,48 +52,116 @@ const Paymentpage = ({ cart, setCart }) => {
     const finalTotal =
         totalPrice + shippingCharge
 
-    const openRazorpay = () => {
+    const openRazorpay = async () => {
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/payment/create-order`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({
+                        amount: finalTotal,
+                    }),
+                }
+            );
 
-        const options = {
+            const order = await res.json();
 
-            key: "rzp_test_SrxmXqKkbOaZHy",
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                order_id: order.id,
+                name: "Saundrya",
+                description: "Order Payment",
 
-            amount: (totalPrice + 60) * 100,
+                handler: async function (response) {
+                    try {
+                        const verifyRes = await fetch(
+                            `${import.meta.env.VITE_API_URL}/payment/verify-payment`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                },
+                                body: JSON.stringify(response),
+                            }
+                        );
 
-            currency: "INR",
+                        const data = await verifyRes.json();
 
-            name: "My Store",
+                        if (data.success) {
+                            await saveOrder();
+                            setCart([]);
+                            navigate("/success");
+                        } else {
+                            alert("Payment verification failed");
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
+            };
 
-            description: "Order Payment",
+            const razorpay = new window.Razorpay(options);
+            razorpay.open();
 
-            handler: function () {
-                navigate("/success")
-            }
+        } catch (error) {
+            console.log(error);
         }
+    };
+    console.log("CART:", cart);
 
-        const razorpay = new window.Razorpay(options)
-        razorpay.open()
-    }
-
-    const saveOrder = () => {
-        const oldOrders = JSON.parse(localStorage.getItem("orders")) || []
-
-        const newOrders = cart.map(item => ({
-            id: Date.now() + item.id,
-            orderId: "OD" + Date.now(),
-            date: new Date().toLocaleDateString("en-IN"),
+    console.log(
+        "PRODUCTS:",
+        cart.map((item) => ({
+            productId: item._id,
             name: item.name,
             image: item.img,
+            price: item.price,
             qty: item.qty,
-            price: item.price
         }))
+    );
+    const saveOrder = async () => {
+        try {
+            await fetch(
+                `${import.meta.env.VITE_API_URL}/orders`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
 
-        localStorage.setItem(
-            "orders",
-            JSON.stringify([...oldOrders , ...newOrders])
-        )
+                    body: JSON.stringify({
+                        products: cart.map(
+                            (item) => ({
+                                productId: item.id,
+                                name: item.name,
+                                image: item.img,
+                                price: item.price,
+                                qty: item.qty,
+                            })
+                        ),
 
-    }
+                        address: savedAddress,
+                        totalPrice,
+                        shippingCharge,
+                        paymentMethod,
+                    }),
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className='bg-gray-100 min-h-screen p-4'>

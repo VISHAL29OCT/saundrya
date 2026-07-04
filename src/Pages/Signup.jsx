@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from "axios";
 
 const Signup = ({ open, setOpen, openLogin }) => {
 
@@ -7,27 +8,31 @@ const Signup = ({ open, setOpen, openLogin }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSignup = (e) => {
-    e.preventDefault()
+  const handleSignup = async (e) => {
+  e.preventDefault();
 
-    const user = {
-      firstName,
-      lastName,
-      email,
-      password
-    }
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/auth/signup`,
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      }
+    );
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(user)
-    )
+    alert("Account Created Successfully!");
 
-    alert("Account Created Successfully!")
-
-    setOpen(false)
-
-    openLogin()
+    setOpen(false);
+    openLogin();
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+      "Signup Failed"
+    );
   }
+};
 
   if (!open) return null
 

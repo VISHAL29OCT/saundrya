@@ -7,7 +7,8 @@ const Account = ({ open, setOpen, setIsLoggedIn }) => {
     const navigate = useNavigate()
     const logout = () => {
 
-        localStorage.removeItem("isLoggedIn")
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
 
         setIsLoggedIn(false)
 
@@ -36,7 +37,7 @@ const Account = ({ open, setOpen, setIsLoggedIn }) => {
                         <Link to="/mywishlist">
                             <div onClick={() => setOpen(!open)} className=' cursor-pointer pb-4'>My Wishlist</div>
                         </Link>
-                        <Link to="/">
+                        <Link to="/savedaddress">
                             <div onClick={() => setOpen(!open)} className=' cursor-pointer pb-4'>Saved Address</div>
                         </Link>
                         <div

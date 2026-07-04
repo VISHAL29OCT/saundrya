@@ -1,14 +1,28 @@
-import React, { useState } from 'react'
-import products from '../data/productsarray'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
 const ShopLook = () => {
+  const [products, setProducts] = useState([]);
   const [index, setIndex] = useState(0)
   const [start, setStart] = useState(0)
+
+  useEffect(() => {
+    fetch(
+      `${import.meta.env.VITE_API_URL}/products`
+    )
+      .then((res) =>
+        res.json()
+      )
+      .then((data) => {
+        setProducts(data);
+      });
+  }, []);
 
   const slides = products.filter(
     (item) => item.shopLook
   )
+ if (slides.length === 0)
+  return <h1>No Shop Look Products</h1>;
   const next = () => {
     setIndex((prev) => (prev + 1) % slides.length)
   }
@@ -16,6 +30,8 @@ const ShopLook = () => {
   const prev = () => {
     setIndex((prev) => (prev - 1 + slides.length) % slides.length)
   }
+
+
 
   return (
     <>
@@ -48,7 +64,7 @@ const ShopLook = () => {
             if (end - start > 50) prev()
           }}
         >
-          <Link to={`/product/${slides[index].id}`}>
+          <Link to={`/product/${slides[index]._id}`}>
 
             <img
               src={slides[index].img}
@@ -60,7 +76,7 @@ const ShopLook = () => {
         </div>
 
         <div className="md:hidden mt-4 text-center">
-          <Link to={`/product/${slides[index].id}`}>
+          <Link to={`/product/${slides[index]._id}`}>
             <button className="bg-black text-white px-6 py-2 text-sm">
               VIEW PRODUCT
             </button>
@@ -89,7 +105,7 @@ const ShopLook = () => {
 
           <button className="relative bg-black border border-black text-white px-8 py-2 mt-6 overflow-hidden group">
             <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
-            <Link to={`/product/${slides[index].id}`}>
+            <Link to={`/product/${slides[index]._id}`}>
               <span className="relative z-10 group-hover:text-black">
                 VIEW PRODUCT
               </span>

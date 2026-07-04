@@ -3,41 +3,54 @@ import { Link } from 'react-router-dom'
 import { MdDeleteOutline } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 
-const Wishlist = ({addToCart}) => {
+const Wishlist = ({ addToCart }) => {
     const [wishlist, setwishlist] = useState([])
 
     useEffect(() => {
-        const savedwishlist =
-            JSON.parse(localStorage.getItem("wishlist")) || []
-        setwishlist(savedwishlist)
-    }, [])
-
-    const removeItem = (id) => {
-        const updatedwishlist =
-            wishlist.filter(item => item.id != id)
-        setwishlist(updatedwishlist)
-        localStorage.setItem(
-            "wishlist",
-            JSON.stringify(updatedwishlist)
+        fetch(
+            `${import.meta.env.VITE_API_URL}/wishlist`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token"
+                    )}`,
+                },
+            }
         )
-    }
+            .then((res) =>
+                res.json()
+            )
+            .then((data) => {
+                setwishlist(data);
+            });
+    }, []);
 
-    const moveToCart = (item) => {
+    const removeItem = async (id) => {
+        await fetch(
+            `${import.meta.env.VITE_API_URL}/wishlist/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token"
+                    )}`,
+                },
+            }
+        );
 
-    addToCart({ ...item })
+        setwishlist(
+            wishlist.filter(
+                (item) =>
+                    item._id !== id
+            )
+        );
+    };
 
-    const updatedWishlist =
-        wishlist.filter(
-            wishItem => wishItem.id !== item.id
-        )
+    const moveToCart = async (item) => {
+        addToCart({ ...item });
 
-    setwishlist(updatedWishlist)
-
-    localStorage.setItem(
-        "wishlist",
-        JSON.stringify(updatedWishlist)
-    )
-}
+        await removeItem(item._id);
+    };
 
     // const wishlist = JSON.parse(localStorage.getItem("wishlist")) || []
 
@@ -78,7 +91,7 @@ const Wishlist = ({addToCart}) => {
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
 
                         {wishlist.map((item) => (
-                            <div key={item.id}
+                            <div key={item._id}
                                 className='bg-pink-100 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 group' >
 
                                 <div className='relative overflow-hidden'>
@@ -90,7 +103,7 @@ const Wishlist = ({addToCart}) => {
                                     />
 
                                     <button
-                                        onClick={() => removeItem(item.id)}
+                                        onClick={() => removeItem(item._id)}
                                         className='absolute top-4 right-4 bg-white p-3 rounded-full shadow'
                                     >
                                         <MdDeleteOutline />
@@ -108,8 +121,8 @@ const Wishlist = ({addToCart}) => {
                                         {item.price}
                                     </p>
 
-                                    <button onClick= {
-                                        ()=> moveToCart(item)
+                                    <button onClick={
+                                        () => moveToCart(item)
                                     }
                                         className='bg-black text-white py-2 rounded-xl hover:scale-105 transition'
                                     >
@@ -129,5 +142,6 @@ const Wishlist = ({addToCart}) => {
         </div>
     )
 }
+
 
 export default Wishlist

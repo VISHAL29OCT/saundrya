@@ -1,3 +1,5 @@
+import React from 'react'
+
 const products = [
     {
         id: 1,
@@ -35,6 +37,7 @@ const products = [
         id: 4,
         name: "gallery Golden Heart Rhinestone Bracelet",
         type: "western",
+        hoverimg: "https://everstylish.com/media/catalog/product/cache/32d6a1cc700912c0dcf6eda1e76255f8/j/e/jew1108927-m2-2.jpg",
         img: "https://everstylish.com/media/catalog/product/cache/32d6a1cc700912c0dcf6eda1e76255f8/j/e/jew97551062-1-1_1.jpg",
         price: "₹999.00",
         bestseller: true,
@@ -68,7 +71,7 @@ const products = [
         price: "₹599.00",
         necklace: true,
         traditional: true,
-         pearl:true
+        pearl: true
     }, {
         id: 8,
         name: "SCARLET CHARM - DAINTY HOOPS WITH A DEEP RED HEART",
@@ -172,7 +175,7 @@ const products = [
         price: "₹3199.00",
         festival: true,
         earring: true,
-          springsummer:true
+        springsummer: true
     },
     {
         id: 19,
@@ -180,7 +183,9 @@ const products = [
         type: "indian",
         img: " https://everstylish.com/media/catalog/product/cache/32d6a1cc700912c0dcf6eda1e76255f8/j/e/jew1108556-m2-2-2.jpg",
         price: "₹2199.00",
-        handaccessories: true
+        handaccessories: true,
+        springsummer: true
+
     },
     {
         id: "20",
@@ -191,7 +196,7 @@ const products = [
         bestseller: true,
         gifting: true,
         hairaccessories: true,
-      
+
     },
     {
         id: 21,
@@ -249,7 +254,7 @@ const products = [
         latest: true,
         gifting: true,
         hairaccessories: true,
-        
+
     },
     {
         id: 27,
@@ -268,12 +273,13 @@ const products = [
         price: "₹719.00",
         festival: true,
         earring: true,
-    
+
     },
     {
         id: 29,
         name: "THE VANILLA SWIRL - DELICATE HANDMADE BRACELET",
         type: "maryada",
+        hoverimg: "https://everstylish.com/media/catalog/product/cache/32d6a1cc700912c0dcf6eda1e76255f8/j/e/jew1105319-m2-2.jpg",
         img: "https://everstylish.com/media/catalog/product/cache/32d6a1cc700912c0dcf6eda1e76255f8/j/e/jew1110621-m2.jpg",
         price: "₹1719.00",
         bestseller: true,
@@ -288,7 +294,7 @@ const products = [
         bestseller: true,
         gifting: true,
         hairaccessories: true,
-         pearl:true
+        pearl: true
     },
 
     {
@@ -1186,7 +1192,7 @@ const products = [
         img: "/image39.webp",
         hoverimg: "image21.jpg",
         name: "Darpan Bindi (set of 5)",
-        price: "₹ 1,100",
+        price: "₹ 1,200",
         latestCategory: "shaadi",
         type: "SHADI EDIT",
         bestseller: true,
@@ -1272,7 +1278,7 @@ const products = [
         img: "/image44.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 2,050",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -1284,7 +1290,7 @@ const products = [
         img: "/image37.webp",
         hoverimg: "image21.jpg",
         name: "Darpan Bindi (set of 5)",
-        price: "₹ 1,100",
+        price: "₹ 1,400",
         latestCategory: "shaadi",
         type: "SHADI EDIT",
         bestseller: true,
@@ -1371,7 +1377,7 @@ const products = [
         id: 144,
         name: "Vine Crest Shoulder Grazers In Silver",
         type: "indian",
-        silver:true,
+        silver: true,
         img: "https://www.amama.in/cdn/shop/files/DSC03473-Edit.jpg?v=1765189240&width=800",
         price: "₹999.00",
         party: true,
@@ -1392,7 +1398,7 @@ const products = [
         img: "https://www.amama.in/cdn/shop/files/AMA-ELY3-041.jpg?v=1756887428&width=1200",
         price: "₹1999.00",
         party: true,
-        lastchance:true
+        lastchance: true
     },
     {
         id: 147,
@@ -1438,17 +1444,18 @@ const products = [
         img: "https://www.amama.in/cdn/shop/files/5_00f3ec86-faa3-4113-9d2e-9cb7efe4c347.jpg?v=1756987703&width=1200",
         price: "₹569.00",
         party: true,
-        lastchance:true
+        lastchance: true
 
     },
     {
         id: 152,
         name: "Mini Maxima Studs",
         type: "western",
-
         img: "https://www.amama.in/cdn/shop/files/421793541_18408150967024459_6920263485312122690_n.jpg?v=1756987974&width=700",
         price: "₹999.00",
         party: true,
+        lastchance: true
+
     },
     {
         id: 153,
@@ -1466,6 +1473,8 @@ const products = [
         img: "https://www.amama.in/cdn/shop/files/KKamra.jpg?v=1776678819&width=1200",
         price: "₹999.00",
         party: true,
+        lastchance: true
+
     },
     {
         id: 155,
@@ -1498,7 +1507,7 @@ const products = [
         img: "https://www.amama.in/cdn/shop/files/FOODSERIESSHOOT0357_646487f7-1dc7-4831-942f-dc400f5a6d1b.jpg?v=1756987847&width=800",
         price: "₹599.00",
         vacation: true,
-        lastchance:true
+        lastchance: true
 
     },
     {
@@ -1516,7 +1525,7 @@ const products = [
         img: "https://www.amama.in/cdn/shop/files/KKamra.jpg?v=1776678819&width=1200",
         price: "₹499.00",
         vacation: true,
-        lastchance:true
+        lastchance: true
 
     },
     {
@@ -1526,6 +1535,8 @@ const products = [
         img: "https://www.amama.in/cdn/shop/files/20-04-24_Amama_.21090.jpg?v=1765191810&width=1200",
         price: "₹999.00",
         vacation: true,
+        lastchance: true
+
     }, {
         id: 162,
         name: "Charmfeast Necklace",
@@ -2105,7 +2116,7 @@ const products = [
         img: "/image44.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3,350",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2116,7 +2127,7 @@ const products = [
         img: "/image44.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3,090",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2127,7 +2138,7 @@ const products = [
         img: "/image74.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3,850",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2138,7 +2149,7 @@ const products = [
         img: "/image54.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2149,7 +2160,7 @@ const products = [
         img: "/image34.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3,300",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2160,7 +2171,7 @@ const products = [
         img: "/image48.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2171,7 +2182,7 @@ const products = [
         img: "/image48.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2182,7 +2193,7 @@ const products = [
         img: "/image49.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2193,7 +2204,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2204,7 +2215,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2216,7 +2227,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2228,7 +2239,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2239,7 +2250,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2250,7 +2261,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2261,7 +2272,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2272,7 +2283,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2283,7 +2294,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2294,7 +2305,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2305,7 +2316,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image29.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2316,7 +2327,7 @@ const products = [
         img: "/image98.webp",
         hoverimg: "image9.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2327,7 +2338,7 @@ const products = [
         img: "https://everstylish.com/media/catalog/product/cache/32d6a1cc700912c0dcf6eda1e76255f8/j/e/jew1110619-m2.jpg",
         hoverimg: "image9.jpg",
         name: "Surya Darpan Sahara Earrings",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         latestCategory: "darpana",
         type: "DARPANA",
         bestseller: true,
@@ -2338,7 +2349,7 @@ const products = [
         id: "250",
         img: "https://www.amama.in/cdn/shop/files/Akansha_Ranjan.jpg?v=1776681699&width=1600",
         name: "Akansha Ranjan",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         productuse: "IN SWIVEL LAYERED NECKLACE"
     },
     {
@@ -2353,7 +2364,7 @@ const products = [
         id: "252",
         img: "https://www.amama.in/cdn/shop/files/Hina_khan_in_Darpan.jpg?v=1761304621&width=500",
         name: "Hina Khan",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         productuse: "DARPAN MEEN DANGLERS"
     },
     {
@@ -2367,7 +2378,7 @@ const products = [
         id: "254",
         img: "https://www.amama.in/cdn/shop/files/therealkarismakapoor_1765008070_3781484233559471640_1460581245.jpg?v=1766388201&width=500",
         name: "Karisma Kapoor",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         productuse: "IN BADHAI HO BUGADI"
     },
     {
@@ -2388,7 +2399,7 @@ const products = [
         id: "257",
         img: "https://www.amama.in/cdn/shop/files/Deeksha_Khurana.jpg?v=1776684862&width=500",
         name: "Deeksha Khurana",
-        price: "₹ 3,050",
+        price: "₹ 3150",
         productuse: "WITH SOLOMON CLUTCH"
     },
     {
@@ -2430,7 +2441,7 @@ const products = [
         id: "263",
         img: "https://www.amama.in/cdn/shop/files/IMG-20241112-WA0232.jpg?v=1741594543&width=500",
         name: "RAKUL PREET SINGH",
-        price: "₹ 3,050",
+        price: "₹ 3,059",
         productuse: "IN FROOT LOOP EARRINGS"
     },
     {
@@ -2444,7 +2455,7 @@ const products = [
         id: "265",
         img: "https://www.amama.in/cdn/shop/files/Malaika_Arora_in_Nano_Aurora_Studs_In_Hot_Pink.jpg?v=1766389856&width=500",
         name: "MALAIKA ARORA",
-        price: "₹ 3,050",
+        price: "₹ 4,050",
         productuse: "IN NANAO AURORA STUDS IN HOT PINK"
     },
     {
@@ -2540,4 +2551,5 @@ const products = [
 
 ]
 
-export default products
+
+export default products;

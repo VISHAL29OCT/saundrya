@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 
 const Payment = ({ cart }) => {
-
-
+    const [showPincodeInput, setShowPincodeInput] = useState(false)
+    const [deliveryPincode, setDeliveryPincode] = useState("")
     const totalPrice = cart.reduce((total, item) => {
-        return total +
-            Number(
-                item.price.replace("₹", "")
-                    .replace(".00", "")
-            ) * item.qty
-    }, 0)
+        return total + item.price * item.qty;
+    }, 0);
 
     const shippingCharge =
         totalPrice < 1999 ? 60 : 0
@@ -36,19 +32,63 @@ const Payment = ({ cart }) => {
             !address.phone ||
             !address.pincode
         ) {
-            alert("please fill all required details")
-            return
+            alert("please fill all required details");
+            return;
         }
 
-        localStorage.setItem(
-            "address",
-            JSON.stringify(address)
-        )
-        navigate("/paymentpage")
+        navigate("/paymentpage");
+    
+        ;
     }
+    const saveAddress = async () => {
+        try {
+            await fetch(
+                `${import.meta.env.VITE_API_URL}/address`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                    body: JSON.stringify(address),
+                }
+            );
 
-    const [showPincodeInput, setShowPincodeInput] = useState(false)
-    const [deliveryPincode, setDeliveryPincode] = useState("")
+            alert("Address Saved");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/address`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "token"
+                    )}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                const defaultAddress =
+                    data.find(
+                        (address) =>
+                            address.isDefault
+                    );
+
+                if (defaultAddress) {
+                    setAddress(
+                        defaultAddress
+                    );
+                }
+            });
+    }, []);
     return (
         <>
             <div className='flex flex-col lg:flex-row mx-2 lg:mx-6'>
@@ -58,7 +98,7 @@ const Payment = ({ cart }) => {
                         <input type="tel" className='border px-3 py-1 w-full lg:w-1/2 rounded-md
                             outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Enter Your Number' required />
 
-                        <input type="email" className='border px-3 py-1 w-full lg:w-1/2 rounded-md
+                        <input type="email" value={address.email} onChange={(e) => setAddress({ ...address, email: e.target.value })} className='border px-3 py-1 w-full lg:w-1/2 rounded-md
                         outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Enter your Email' required />
                     </div>
                     <h3 className='border-b pb-1'>Delivery Details</h3>
@@ -66,6 +106,7 @@ const Payment = ({ cart }) => {
                     <div>
                         <input type="text" name="" id="" placeholder='Recipient name' value={address.name} onChange={(e) => setAddress({ ...address, name: e.target.value })} className='border w-full px-3 py-1 my-1 placeholder:text-sm rounded-md
                             outline-none focus:ring-1 focus:ring-orange-400' required />
+
                         <div className='flex flex-col lg:flex-row gap-2 py-2'>
                             <input
                                 type="tel"
@@ -97,12 +138,15 @@ const Payment = ({ cart }) => {
                         </div>
                         <div className='flex flex-col lg:flex-row gap-2 py-2'>
 
-                            <input type="text" className='border w-full lg:w-1/2  px-3  py-1 rounded-md outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Apartment /House /Flat No.' />
+                            <input type="text" value={address.house} onChange={(e) => setAddress({ ...address, house: e.target.value })} className='border w-full lg:w-1/2  px-3  py-1 rounded-md outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Apartment /House /Flat No.' />
 
-                            <input type="text" className='border w-full lg:w-1/2  px-3  py-1 rounded-md outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Street /Colony /Area Name' />
+                            <input type="text" value={address.area} onChange={(e) => setAddress({
+                                ...address, area: e.target.value
+                            })}
+                                className='border w-full lg:w-1/2  px-3  py-1 rounded-md outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Street /Colony /Area Name' />
                         </div>
                         <div className='flex flex-col lg:flex-row gap-2 py-2'>
-                            <input type="text" className='border w-full lg:w-1/2 py-1  px-3  rounded-md outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Locality/Town' />
+                            <input type="text" value={address.town} onChange={(e) => setAddress({ ...address, town: e.target.value })} className='border w-full lg:w-1/2 py-1  px-3  rounded-md outline-none focus:ring-1 focus:ring-orange-400 placeholder:text-sm' placeholder='Locality/Town' />
                             <input
                                 type="text"
                                 className='border w-full lg:w-1/2  px-3  py-1 rounded-md outline-none focus:ring-1 focus:ring-orange-400'
@@ -116,6 +160,12 @@ const Payment = ({ cart }) => {
                                 }
                             />
                         </div>
+                        <button
+                            onClick={saveAddress}
+                            className="bg-gray-200 px-3 text-sm py-1 rounded  hover:bg-orange-400"
+                        >
+                            Save Address
+                        </button>
                     </div>
                 </div>
 

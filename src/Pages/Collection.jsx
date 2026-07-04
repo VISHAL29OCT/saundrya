@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom"
-import products from '../data/productsarray'
 
 const Collection = ({ addToCart }) => {
     const { category, query } = useParams()
@@ -12,13 +11,22 @@ const Collection = ({ addToCart }) => {
     const [gridCols, setGridCols] = useState("lg:grid-cols-4")
     const [showSort, setShowSort] = useState(false)
     const [visibleProducts, setVisibleProducts] = useState(20)
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetch(
+            `${import.meta.env.VITE_API_URL}/products`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                setProducts(data);
+            });
+    }, []);
+
 
     const filteredProducts = products.filter((item) => {
 
-        const priceValue = Number(
-            item.price.replace(/[₹,\s]/g, "")
-                .replace(".00", "")
-        )
+        const priceValue = Number(item.price)
 
         if (priceValue > price) return false
 
@@ -68,27 +76,17 @@ const Collection = ({ addToCart }) => {
 
     if (sortOption === "low") {
 
-        sortedProducts.sort((a, b) => {
-
-            return (
-                Number(a.price.replace("₹", "").replace(".00", "")) -
-                Number(b.price.replace("₹", "").replace(".00", ""))
-            )
-
-        })
+        sortedProducts.sort(
+            (a, b) => a.price - b.price
+        )
 
     }
 
     if (sortOption === "high") {
 
-        sortedProducts.sort((a, b) => {
-
-            return (
-                Number(b.price.replace("₹", "").replace(".00", "")) -
-
-                Number(a.price.replace("₹", "").replace(".00", ""))
-            )
-        })
+        sortedProducts.sort(
+            (a, b) => b.price - a.price
+        )
     }
     if (sortOption === "az") {
 
@@ -277,11 +275,11 @@ const Collection = ({ addToCart }) => {
 
     return (
         <>
-        <div className='mx-2 lg:mx-6'>
-            <div className='bg-[url("https://www.amama.in/cdn/shop/collections/Untitled_Capture5166.jpg?v=1742365330&width=1200")] lg:bg-cover lg:bg-center relative lg:h-80 h-full w-full text-center flex flex-col justify-center items-center'>
-                <h2 className='text-white lg:text-4xl text-2xl sm:p-4'>{heading.toUpperCase()}</h2>
-                <p className='text-white text-md text-center p-4  lg:text-2xl '>{para[filter] || para[category] || "Discover our latest arrivals and fresh designs."}</p>
-            </div>
+            <div className='mx-2 lg:mx-6'>
+                <div className='bg-[url("https://www.amama.in/cdn/shop/collections/Untitled_Capture5166.jpg?v=1742365330&width=1200")] lg:bg-cover lg:bg-center relative lg:h-80 h-full w-full text-center flex flex-col justify-center items-center'>
+                    <h2 className='text-white lg:text-4xl text-2xl sm:p-4'>{heading.toUpperCase()}</h2>
+                    <p className='text-white text-md text-center p-4  lg:text-2xl '>{para[filter] || para[category] || "Discover our latest arrivals and fresh designs."}</p>
+                </div>
             </div>
 
             <div className='flex justify-between items-center border-y mx-2 lg:mx-6  '>
@@ -662,8 +660,8 @@ const Collection = ({ addToCart }) => {
                                 .slice(0, visibleProducts)
                                 .map((item) =>
 
-                                    <div key={item.id} className='relative group cursor-pointer'>
-                                        <Link to={`/product/${item.id}`}>
+                                    <div key={item._id} className='relative group cursor-pointer'>
+                                        <Link to={`/product/${item._id}`}>
                                             <img
                                                 src={item.img}
                                                 className='w-full h-full object-cover '

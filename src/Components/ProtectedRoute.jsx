@@ -6,9 +6,8 @@ import Signup from '../Pages/Signup';
 
 
 const ProtectedRoute = ({ children, setIsLoggedIn }) => {
-  const isLoggedIn = JSON.parse(
-    localStorage.getItem("isLoggedIn")
-  );
+  const isLoggedIn = 
+   !!localStorage.getItem("token");
 
   const [loginOpen, setLoginOpen] = useState(true);
   const [signupOpen, setSignupOpen] = useState(false);

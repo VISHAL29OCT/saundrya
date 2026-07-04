@@ -1,32 +1,44 @@
 import React from 'react'
 // import { Link } from "react-router-dom";
 import { useState } from 'react'
+import axios from "axios";
 
-const Login = ({ open, setOpen, openSignup ,setIsLoggedIn }) => {
+const Login = ({ open, setOpen, openSignup, setIsLoggedIn }) => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleLogin = () => {
-    const savedUser =
-    JSON.parse(localStorage.getItem("user"))
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
 
-  if (
-    savedUser?.email === email &&
-    savedUser?.password === password
-  ){
-  localStorage.setItem(
-    "isLoggedIn",
-    JSON.stringify(true)
-  )
-  setIsLoggedIn(true)
-  setOpen(false)
-}
-  else {
-    alert("Invalid Email or Password")
-  }
-}
+      localStorage.setItem(
+        "token",
+        response.data.token
+      );
 
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.user)
+      );
+
+      setIsLoggedIn(true);
+      setOpen(false);
+
+      alert("Login Successful");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+        "Login Failed"
+      );
+    }
+  };
   if (!open) return null
 
   return (
@@ -80,7 +92,7 @@ const Login = ({ open, setOpen, openSignup ,setIsLoggedIn }) => {
 
 
             <button
-            type='button'
+              type='button'
               onClick={handleLogin}
               className="w-full bg-red-400 text-white p-3 rounded"
             >

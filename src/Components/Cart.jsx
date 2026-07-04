@@ -6,12 +6,8 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
 
     const totalPrice = cart.reduce((total, item) => {
 
-        const price = Number(
-            String(item.price)
-                .replace("₹", "")
-                .replace(".00", "")
-                .replace(/,/g, "")
-        ) || 0
+        const price =
+            Number(item.price) || 0;
 
         return total + (price * item.qty)
 
@@ -20,7 +16,7 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
     const shippingCharge =
         totalPrice < 1999 ? 60 : .00
 
-        const finalTotal = totalPrice + shippingCharge
+    const finalTotal = totalPrice + shippingCharge
 
     useEffect(() => {
         if (open) {
@@ -63,17 +59,17 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
                             </div>
                         ) : (
                             cart.map((item) => (
-                                <div key={item.id} className='p-4'>
+                                <div key={item._id} className='p-4'>
                                     <div className='lg:flex flex-col sm:flex-row gap-4 items-center sm:items-start'>
                                         <img src={item.img} alt="" className='w-28 h-28 object-cover rounded' />
                                         <div className='flex flex-col gap-2'>
                                             <h2 className='leading-6 lg:text-sm'>{item.name}</h2>
-                                            <p className='font-semibold'>{item.price}</p>
+                                            <p className='font-semibold'>₹{item.price}</p>
                                             <div className='flex items-center gap-2'>
-                                                <button className='border p-1 h-8 w-8' onClick={() => decreaseQty(item.id)}>-</button>
+                                                <button className='border p-1 h-8 w-8' onClick={() => decreaseQty(item._id)}>-</button>
                                                 <span> {item.qty}</span>
-                                                <button className='border h-8 w-8 p-1 mx-1 ' onClick={() => increaseQty(item.id)}>+</button>
-                                                <button className='text-xl' onClick={() => removeFromCart(item.id)} ><MdDelete />
+                                                <button className='border h-8 w-8 p-1 mx-1 ' onClick={() => increaseQty(item._id)}>+</button>
+                                                <button className='text-xl' onClick={() => removeFromCart(item._id)} ><MdDelete />
                                                 </button>
                                             </div>
 
@@ -86,17 +82,17 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
                     }
                 </div>
                 <h6 className='border-b py-2 px-4 text-md' >
-                    Shipping: {shippingCharge === 0 ? "FREE " :  `₹${shippingCharge}`}
-                 <span className='text-sm'>(Free for orders above ₹1999</span>)</h6>
+                    Shipping: {shippingCharge === 0 ? "FREE " : `₹${shippingCharge}`}
+                    <span className='text-sm'>(Free for orders above ₹1999</span>)</h6>
                 <h3 className='border-t py-2 px-4 '>Cart Subtotal :₹{totalPrice}</h3>
                 <h5 className='border-y py-2 px-4'>Grand Total : ₹{finalTotal}
                 </h5>
                 {
-                    cart.length> 0 && (
-                
-                <Link to={"/checkout"}>
-                    <button onClick={() => setOpen(false)} className='bg-red-300 w-[90%]  p-4 m-4 hover:cursor-pointer hover:bg-red-400'>CHECKOUT</button>
-                </Link>
+                    cart.length > 0 && (
+
+                        <Link to={"/checkout"}>
+                            <button onClick={() => setOpen(false)} className='bg-red-300 w-[90%]  p-4 m-4 hover:cursor-pointer hover:bg-red-400'>CHECKOUT</button>
+                        </Link>
                     )}
 
             </div>
