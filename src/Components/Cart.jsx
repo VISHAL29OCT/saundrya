@@ -29,9 +29,6 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
             document.body.style.overflow = "auto";
         };
     }, [open]);
-
-
-
     return (
         <>
             {
@@ -39,14 +36,15 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
                     <div className='fixed inset-0 bg-black/40 z-40'
                         onClick={() => setOpen(false)} />
                 )}
-            <div className={`fixed top-0 right-0 w-full lg:w-100 h-screen bg-white flex flex-col  z-50 transition-transform duration-500
-                ${open ? "translate-x-0" : "translate-x-full"}`}>
-
+            <div
+                className={`fixed top-0 right-0 w-full sm:w-105 h-dvh bg-white flex flex-col z-50 transition-transform duration-500
+  ${open ? "translate-x-0" : "translate-x-full"}`}
+            >
                 <div className='flex justify-between p-4 bg-red-300 '>
                     <h2 className=' text-2xl text-white font-semibold font-serif'>MINI BAG</h2>
                     <button onClick={() => setOpen(false)}>❌</button>
                 </div>
-                <div className='flex-1 overflow-y-auto'>
+                <div className="flex-1 overflow-y-auto min-h-0">
                     {
                         cart.length === 0 ? (
                             <div className='flex flex-col items-center justify-center h-full gap-4'>
@@ -88,21 +86,26 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
                         )
                     }
                 </div>
-                <h6 className='border-b py-2 px-4 text-md' >
-                    Shipping: {shippingCharge === 0 ? "FREE " : `₹${shippingCharge}`}
-                    <span className='text-sm'>(Free for orders above ₹1999</span>)</h6>
-                <h3 className='border-t py-2 px-4 '>Cart Subtotal :₹{totalPrice}</h3>
-                <h5 className='border-y py-2 px-4'>Grand Total : ₹{finalTotal}
-                </h5>
-                {
-                    cart.length > 0 && (
 
-                        <Link to={"/checkout"}>
-                            <button onClick={() => setOpen(false)} className='bg-red-300 w-[90%]  p-4 m-4 hover:cursor-pointer hover:bg-red-400'>CHECKOUT</button>
-                        </Link>
-                    )}
+                <div className="border-t bg-white p-4 shrink-0">
+                    <h6 className='border-b py-2 px-4 text-md' >
+                        Shipping: {shippingCharge === 0 ? "FREE " : `₹${shippingCharge}`}
+                        <span className='text-sm'>(Free for orders above ₹1999</span>)
+                    </h6>
 
-            </div>
+                    <p className='border-t py-2 px-4 '>Cart Subtotal :₹{totalPrice}</p>
+                    <p className='border-y py-2 px-4'>Grand Total : ₹{finalTotal}
+                    </p>
+                    {
+                        cart.length > 0 && (
+
+                            <Link to={"/checkout"}>
+                                <button onClick={() => setOpen(false)} className='bg-red-300 w-[90%]  p-4  hover:cursor-pointer hover:bg-red-400'>CHECKOUT</button>
+                            </Link>
+                        )}
+                </div>
+
+            </div >
         </>
     )
 }
