@@ -113,7 +113,7 @@ const ProductsDetails = ({ addToCart, cart }) => {
     return (
         <>
             <div className='mx-2 lg:mx-6 md:mx-4'>
-                <img src="https://everstylish.com/media/blueskytechco/banner/default/d_1.jpg" alt="" className='w-full h-40 lg:h-32 object-cover' />
+                <img src="https://everstylish.com/media/blueskytechco/banner/default/d_1.jpg" alt="" className='sm:h-0  lg:w-full lg:h-32 object-cover' />
             </div>
 
             <div className='grid lg:grid-cols-[10%_40%_50%] grid-cols-1 lg:m-6 m-2'>
@@ -239,7 +239,7 @@ const ProductsDetails = ({ addToCart, cart }) => {
 
                 <div
                     onClick={next}
-                    className=' absolute top-1/2 -translate-y-1/2 -right-5 bg-red-300 text-pink-900 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer z-10'>
+                    className=' absolute top-1/2 -translate-y-1/2 -right-6 bg-red-300 text-pink-900 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer z-10'>
                     →
                 </div>
 
