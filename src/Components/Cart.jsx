@@ -152,7 +152,7 @@ const Cart = ({ open, setOpen, cart, increaseQty, decreaseQty, removeFromCart })
                                                 REMOVE
                                             </button>
 
-                                            <button
+                                            <button 
                                                 className="flex-1 border-l text-center text-sm font-medium hover:text-pink-500"
                                             >
                                                 WISHLIST

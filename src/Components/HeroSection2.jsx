@@ -71,9 +71,7 @@ const HeroSection2 = () => {
             </div>
             <div className='lg:mx-6 mx-2'>
 <Link to= "/ourstores">
-                <img
-              
-              src="bg5.webp" className='w-[96] h-full lg:w-[96vw] lg:h-[80vh] sm:h-[60vh] object-cover' />
+                <img src="bg5.webp" className='w-[96vw] h-full lg:w-[96vw] lg:h-[80vh] sm:h-[60vh] object-cover' />
            </Link>
             </div>
         </>
